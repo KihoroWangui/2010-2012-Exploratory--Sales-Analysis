@@ -48,14 +48,34 @@ correlation = final_data['Fuel_Price'].corr(final_data['Weekly_Sales'])
 print(f"Correlation between Fuel Price and Sales: {correlation}")
 
 #visualization 
-
-
-
-# Export KPIs and summarized data
-final_data.to_excel('final_data_analysis.csv', index=False)
-
-# Save specific results, e.g., top-performing stores
-top_stores.to_excel('top_stores.csv')
+# of sales over time
+plt.figure(figsize=(10, 6))
+sales_trends = final_data.groupby('Date')['Weekly_Sales'].sum()
+plt.plot(sales_trends.index, sales_trends.values)
+plt.title('Total Sales Over Time')
+plt.xlabel('Date')
+plt.ylabel('Weekly_Sales')
+plt.grid()
+plt.show()
+#top 10 stores based on sales
+top_stores.head(10).plot(kind='bar', figsize=(10, 6), color='skyblue')
+plt.title('Top 10 Stores by Total Sales')
+plt.xlabel('Store')
+plt.ylabel('Total Sales')
+plt.show()
+#markdown effect on sales
+plt.figure(figsize=(10, 6))
+sns.boxplot(x='MarkDown4', y='Weekly_Sales', data=final_data)
+plt.title('Effect of Markdowns on Sales')
+plt.show()
+#fuel prices against sales
+plt.figure(figsize=(10, 6))
+sns.scatterplot(x='Fuel_Price', y='Weekly_Sales', data=final_data)
+plt.title('Fuel Price vs. Sales')
+plt.show()
+#export data
+final_data.to_csv('final_data_analysis.csv', index=False)
+top_stores.to_csv('top_stores.csv', index=False)
 
 
 
